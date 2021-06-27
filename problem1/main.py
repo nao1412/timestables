@@ -69,7 +69,7 @@ for j in range(START, GOAL+1):
 con.commit()
 
 '''
-やり方はあってそうだけどsqliteのinsertがうまく動いていない 
+やり方はあってそうだけどsqliteのinsertがうまく動いていない
 -> workspace/sqlite_test.pyで実験中
 -> con.commit()を忘れていた
 '''

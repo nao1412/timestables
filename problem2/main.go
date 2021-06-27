@@ -9,7 +9,8 @@ import (
 	"time"
 )
 
-const logFile = "logs.json"
+const logFile = "logs.json" // 時間があったらsqliteに保存する
+// const weatherFile = "openweather.json"
 
 type Log struct {
 	ID    int    `json: "id"`
@@ -19,7 +20,7 @@ type Log struct {
 }
 
 func main() {
-	println("sever - http://localhost:8888")
+	println("server - http://localhost:8888")
 	http.HandleFunc("/", showHandler)
 	http.HandleFunc("/write", writeHandler)
 	http.ListenAndServe(":8888", nil)
@@ -27,6 +28,7 @@ func main() {
 
 func showHandler(w http.ResponseWriter, r *http.Request) {
 	htmlLog := ""
+
 	logs := loadLogs()
 	for _, i := range logs {
 		htmlLog += fmt.Sprintf(
@@ -36,11 +38,16 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 			html.EscapeString(i.Body),
 			time.Unix(i.CTime, 0).Format("2006/1/1 15:04"))
 	}
+
 	htmlBody := "<html><head><style>" +
 		"p { border: 1px solid silver; padding: 1em;} " +
 		"span { background-color: #eef; } " +
 		"</style></head><body><h1>にの</h1>" +
-		getForm() + htmlLog + "</body></html>"
+		getForm() +
+		// API
+		// htmlLogAPI +
+		htmlLog +
+		"</body></html>"
 	w.Write([]byte(htmlBody))
 }
 
