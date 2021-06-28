@@ -15,38 +15,45 @@ if judge == 'y':
   ESCAPE = list(map(int, input().split()))
 
 nnn = []
-print('積がnの倍数のみ表示[y/n] >>', end=' ')
+mmm = []
+print('積がnの倍数のみ表示[y/n], nの倍数を表示しない時[x] (separated by spaces) >>', end=' ')
 judge = input()
 if judge == 'y':
   print('n (separated by spaces) >>', end=' ')
   nnn = list(map(int, input().split()))
+elif judge == 'x':
+  print('n (separated by spaces) >>', end=' ')
+  mmm = list(map(int, input().split()))
 
 times_tables = []
+clm = []; idx = []
 for i in range(START, GOAL+1):
+  clm.append('x' + str(i))
   if i in ESCAPE: continue
-  DAN = []
+  TABLE = []
+  idx.append(str(i) + ' times')
   for j in range(START, GOAL+1):
     if len(nnn) > 0:
       for k in nnn:
         if i * j % k == 0:
-          print('%d×%d=%d' %(i, j , i*j), end=' ')
-          DAN.append(str(i) + '×' + str(j) + '=' + str(i*j))
+          # print('%d×%d=%d' %(i, j , i*j), end=' ')
+          TABLE.append(str(i) + 'x' + str(j) + '=' + str(i*j))
         else: 
-          print('     ', end=' ')
-          DAN.append('     ')
+          # print('     ', end=' ')
+          TABLE.append('')
     else:
-      print('%d×%d=%d' %(i, j , i*j), end=' ')
-      DAN.append(str(i) + '×' + str(j) + '=' + str(i*j))
-    if j == GOAL: print('')
-  times_tables.append(DAN)
+      # print('%d×%d=%d' %(i, j , i*j), end=' ')
+      TABLE.append(str(i) + 'x' + str(j) + '=' + str(i*j))
+    # if j == GOAL: print('')
+  times_tables.append(TABLE)
 
-print(times_tables)
-name = times_tables[0][0]
-df = pd.DataFrame(times_tables)
-df.index = np.arange(1, len(df)+1) # こ
+# print(idx, clm)
+# print(times_tables)
+df = pd.DataFrame(times_tables, columns=clm, index=idx)
+df = df.T
 print(df)
-print(name)
 
+# nの倍数を表示しないを実装
 
 '''sqlite3を使って表を作る'''
 '''
