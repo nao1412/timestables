@@ -16,7 +16,7 @@ if judge == 'y':
 
 nnn = []
 mmm = []
-print('積がnの倍数のみ表示[y/n], nの倍数を表示しない時[x] (separated by spaces) >>', end=' ')
+print('積がnの倍数のみ表示[y/n], nの倍数を表示しない場合[x] (separated by spaces) >>', end=' ')
 judge = input()
 if judge == 'y':
   print('n (separated by spaces) >>', end=' ')
@@ -36,15 +36,17 @@ for i in range(START, GOAL+1):
     if len(nnn) > 0:
       for k in nnn:
         if i * j % k == 0:
-          # print('%d×%d=%d' %(i, j , i*j), end=' ')
           TABLE.append(str(i) + 'x' + str(j) + '=' + str(i*j))
-        else: 
-          # print('     ', end=' ')
+        else:
           TABLE.append('')
+    elif len(mmm) > 0:
+      if i * j % k == 0:
+        TABLE.append('')
+        continue
+      else:
+        TABLE.append(str(i) + 'x' + str(j) + '=' + str(i*j))
     else:
-      # print('%d×%d=%d' %(i, j , i*j), end=' ')
       TABLE.append(str(i) + 'x' + str(j) + '=' + str(i*j))
-    # if j == GOAL: print('')
   times_tables.append(TABLE)
 
 # print(idx, clm)
