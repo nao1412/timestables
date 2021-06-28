@@ -19,6 +19,12 @@ type Log struct {
 	CTime int64  `json:"ctime"`
 }
 
+type weatherLog struct {
+	// Time    string `json:"time"`
+	Weather string  `json:"weather"`
+	Temp    float64 `json:"temp"`
+}
+
 func main() {
 	println("server - http://localhost:8888")
 	http.HandleFunc("/", showHandler)
@@ -38,14 +44,18 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 			html.EscapeString(i.Body),
 			time.Unix(i.CTime, 0).Format("2006/1/1 15:04"))
 	}
-
+	weatherLogAPI, err := ioutil.ReadFile("openweather.txt")
+	if err != nil {
+		return
+	}
+	htmlLogAPI := string(weatherLogAPI)
 	htmlBody := "<html><head><style>" +
 		"p { border: 1px solid silver; padding: 1em;} " +
 		"span { background-color: #eef; } " +
 		"</style></head><body><h1>にの</h1>" +
 		getForm() +
 		// API
-		// htmlLogAPI +
+		htmlLogAPI +
 		htmlLog +
 		"</body></html>"
 	w.Write([]byte(htmlBody))

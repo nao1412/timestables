@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const weatherFile = "openweather.json"
+const weatherFile = "openweather.txt"
 
 type OpenWeatherMapAPIResponse struct {
 	Coord struct {
@@ -54,8 +54,19 @@ type OpenWeatherMapAPIResponse struct {
 	Cod      int    `json:"cod"`
 }
 
+type weatherLog struct {
+	// Time    string `json:"time"`
+	Weather string  `json:"weather"`
+	Temp    float64 `json:"temp"`
+}
+
+func saveWeatherLog(logs []weatherLog) {
+	bytes, _ := json.Marshal(logs)
+	ioutil.WriteFile(weatherFile, bytes, 0644) // main.goと同じ0644でも大丈夫？
+}
+
 func main() {
-	token := "xxxxxx"
+	token := "XXXX"
 	city := "Tokyo,jp"
 	endPoint := "https://api.openweathermap.org/data/2.5/weather"
 
@@ -68,22 +79,30 @@ func main() {
 		panic(err)
 	}
 	defer res.Body.Close()
-	fmt.Println(res, 1)
-	fmt.Println(res.Body, 2)
 	bytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(bytes, 3)
-	fmt.Println(string(bytes), 4)
+	fmt.Println(string(bytes))
 	// ここのbytesをopenweather.jsonに格納したい
-	// saveWeatherLog(string(bytes))
-
 	// json parse
 	var apiRes OpenWeatherMapAPIResponse
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
 		panic(err)
 	}
+
+	weatherlog := weatherLog{
+		// timeはその時間を出力
+		Weather: apiRes.Weather[0].Description,
+		Temp:    apiRes.Main.Temp - 273,
+	}
+
+	bytes, _ = json.Marshal(&weatherlog)
+	ioutil.WriteFile(weatherFile, bytes, 0644)
+	fmt.Println(string(bytes))
+
+	fmt.Println(apiRes)
+
 	fmt.Printf("時刻:%s\n", time.Unix(apiRes.Dt, 0))
 	fmt.Printf("天気:%s\n", apiRes.Weather[0].Main)
 	fmt.Printf("アイコン: https://openweathermap.org/img/wn/%s@2x.png\n", apiRes.Weather[0].Icon)
@@ -97,9 +116,15 @@ func main() {
 	fmt.Printf("湿度: %d\n", apiRes.Main.Humidity)
 	fmt.Printf("風速:%fm/s\n", apiRes.Wind.Speed)
 	fmt.Printf("風向き:%d°\n", apiRes.Wind.Deg)
+
+	weatherLogAPI, err := ioutil.ReadFile("openweather.txt")
+	fmt.Println(string(weatherLogAPI))
+	// """
+	// var t string = apiRes.Weather[0].Description
+	// weathertxt := "時刻:" + t + "\n"
+
+	// ioutil.WriteFile(weatherFile, []byte(weathertxt), 0644)
+	// """
 }
 
-func saveWeatherLog(logs []OpenWeatherMapAPIResponse) {
-	bytes, _ := json.Marshal(logs)
-	ioutil.WriteFile(weatherFile, bytes, 0644) // main.goと同じ0644でも大丈夫？
-}
+// apiResをopenweather.jsonに保存して1時間ごとに変える->txtでもいいかな
