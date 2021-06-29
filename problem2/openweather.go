@@ -54,18 +54,18 @@ type OpenWeatherMapAPIResponse struct {
 	Cod      int    `json:"cod"`
 }
 
-type weatherLog struct {
-	// Time    string `json:"time"`
-	Weather string  `json:"weather"`
-	Temp    float64 `json:"temp"`
-}
+// type weatherLog struct {
+// 	// Time    string `json:"time"`
+// 	Weather string  `json:"weather"`
+// 	Temp    int `json:"temp"`
+// }
 
 func saveWeatherLog(logs []weatherLog) {
 	bytes, _ := json.Marshal(logs)
 	ioutil.WriteFile(weatherFile, bytes, 0644) // main.goと同じ0644でも大丈夫？
 }
 
-func main() {
+func maain() {
 	token := "XXXX"
 	city := "Tokyo,jp"
 	endPoint := "https://api.openweathermap.org/data/2.5/weather"
@@ -94,7 +94,7 @@ func main() {
 	weatherlog := weatherLog{
 		// timeはその時間を出力
 		Weather: apiRes.Weather[0].Description,
-		Temp:    apiRes.Main.Temp - 273,
+		Temp:    int(apiRes.Main.Temp - 273),
 	}
 
 	bytes, _ = json.Marshal(&weatherlog)

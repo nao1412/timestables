@@ -13,7 +13,7 @@ const logFile = "logs.json" // 時間があったらsqliteに保存する
 // const weatherFile = "openweather.json"
 
 type Log struct {
-	ID    int    `json: "id"`
+	ID    int    `json:"id"`
 	Name  string `json:"name"`
 	Body  string `json:"body"`
 	CTime int64  `json:"ctime"`
@@ -21,8 +21,8 @@ type Log struct {
 
 type weatherLog struct {
 	// Time    string `json:"time"`
-	Weather string  `json:"weather"`
-	Temp    float64 `json:"temp"`
+	Weather string `json:"weather"`
+	Temp    int    `json:"temp"`
 }
 
 func main() {
