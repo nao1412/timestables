@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 print('Enter numbers...')
 print('START >>', end=' ')
@@ -49,41 +48,6 @@ for i in range(START, GOAL+1):
       TABLE.append(str(i) + 'x' + str(j) + '=' + str(i*j))
   times_tables.append(TABLE)
 
-# print(idx, clm)
-# print(times_tables)
 df = pd.DataFrame(times_tables, columns=clm, index=idx)
 df = df.T
 print(df)
-
-# nの倍数を表示しないを実装
-
-'''sqlite3を使って表を作る'''
-'''
-con = sqlite3.connect('times_tables.db')
-cur = con.cursor()
-cur.execute("drop table if exists times_tables;")
-# cur.execute("CREATE TABLE times_tables(九九 text);")
-# cur.execute("INSERT INTO times_tables VALUES ?;", name)
-
-for i in range(START, GOAL+1):
-  name = str(i) + 'の段'
-  if i == START:
-    cur.execute("CREATE TABLE times_tables('%s')" %name)
-  else:
-    cur.execute("ALTER TABLE times_tables ADD COLUMN %s TEXT" %name)
-
-''''''可変サイズのINSERTはできる？''''''
-hatena = ''
-for _ in range(GOAL - START):
-  hatena += '?,'
-hatena += '?'
-for j in range(START, GOAL+1):
-  cur.execute("INSERT INTO times_tables VALUES (%s);" %(hatena, times_tables[i-START][j-START]))
-
-con.commit()
-'''
-'''
-やり方はあってそうだけどsqliteのinsertがうまく動いていない
--> workspace/sqlite_test.pyで実験中
--> con.commit()を忘れていた
-'''

@@ -99,3 +99,5 @@ func saveLogs(logs []Log) {
 	bytes, _ := json.Marshal(logs)
 	ioutil.WriteFile(logFile, bytes, 0644)
 }
+
+// http://program.okitama.org/posts/2017-08-23_golang-timer-ticker/
