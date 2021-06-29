@@ -40,11 +40,11 @@ for i in range(START, GOAL+1):
         else:
           TABLE.append('')
     elif len(mmm) > 0:
-      if i * j % k == 0:
-        TABLE.append('')
-        continue
-      else:
-        TABLE.append(str(i) + 'x' + str(j) + '=' + str(i*j))
+      for k in mmm:
+        if i * j % k == 0:
+          TABLE.append('')
+        else:
+          TABLE.append(str(i) + 'x' + str(j) + '=' + str(i*j))
     else:
       TABLE.append(str(i) + 'x' + str(j) + '=' + str(i*j))
   times_tables.append(TABLE)
