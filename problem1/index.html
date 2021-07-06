@@ -1,46 +1,41 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>TEST</title>
-</head>
-<body>
-
-<div id="table"></div>
-<script type="text/javascript">
-  
-// 表の動的作成
-function makeTable(data, tableId) {
-  // 表の作成開始
-  var rows=[]; var table = document.createElement("table");
-
-  // 表に2次元配列の要素を格納
-  for (i = 0; i < data.length; i++) {
-    rows.push(table.insertRow(-1));  // 行の追加
-    for(j = 0; j < data[0].length; j++){
-      cell=rows[i].insertCell(-1);
-      cell.appendChild(document.createTextNode(data[i][j]));
-      // 背景色の設定
-      if (i == 0) {
-        cell.style.backgroundColor = "#bbb"; // ヘッダ行
-      } else {
-        cell.style.backgroundColor = "#fff"; // ヘッダ行以外
+	<head>
+		<meta charset="UTF-8">
+		<title>times tables</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	</head>
+	<body>
+		<h1>times tables</h1>
+    <label>START : <input type="text" size="10" id="START"></label>
+    <label>GOAL : <input type="text" size="10" id="GOAL"></label>
+    <input type="button" value="Run" id="RunButton" onclick="run()">
+    <p id="test"></p>
+		<table class="table table-bordered table-hover table-sm" style="text-align: center;">
+			<thead class="thead-dark">
+				<tr>
+					<th>#</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<script>
+      var START = 3, GOAL = 9;
+      // let a = document.getElementById('START').value;
+      // var b = document.getElementById("GOAL").textContent;
+      // let test = document.getElementById('test').value;
+      function run() {
+        // test.value = a;
+        for (var i = START; i <= GOAL; i++) {
+          $('table').find('thead').find('tr').append('<th>' + i + ' times' + '</th>');
+          $('table').find('tbody').append('<tr><th>' + 'x' + i + '</th></tr>');
+          for (var j = START; j <= GOAL; j++) {
+            var ans = i * j;
+            $('table').find('tbody').find('tr').eq(i-START).append('<td>'+ i + 'x' + j + '=' + ans + '</td>');
+          }
+        }
       }
-    }
-  }
-  // 指定したdiv要素に表を加える
-  document.getElementById(tableId).appendChild(table);
-}
-window.onload = function() {
-// 表のデータ
-var data = [[11, 12, 13],
-            [21, 22, 23],
-            [31, 32, 33],
-            [41, 42, 43]];
-
-// 表の動的作成
-makeTable(data,"table");
-};
-</script>
-</body>
+		</script>
+	</body>
 </html>
