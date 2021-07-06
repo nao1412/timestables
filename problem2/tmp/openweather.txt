@@ -1,1 +1,0 @@
-{"weather":"moderate rain","temp":21.54000000000002}

@@ -32,11 +32,12 @@ for (let i = START; i <= GOAL; i++) {
       TABLE.push(String(i) + "x" + String(j) + "=" + String(i*j));
     }
   }
-  times_tables.push(TABLE)
+  times_tables.push(TABLE);
 }
 
-console.log(times_tables)
+console.log(times_tables);
 const transpose = a => a[0].map((_, c) => a.map(r => r[c]));
-console.log(transpose(times_tables))
+data = transpose(times_tables);
+console.log(data);
 
 // htmlで出力するときにi==0ならTIMESでj==0ならx1を出力。i==0andj==0なら空白
