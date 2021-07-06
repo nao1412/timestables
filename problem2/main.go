@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const logFile = "logs.json" // 時間があったらsqliteに保存する
+const logFile = "tmp/logs.json" // 時間があったらsqliteに保存する
 // const weatherFile = "openweather.json"
 
 type Log struct {
@@ -19,17 +19,17 @@ type Log struct {
 	CTime int64  `json:"ctime"`
 }
 
-type weatherLog struct {
-	// Time    string `json:"time"`
-	Weather string `json:"weather"`
-	Temp    int    `json:"temp"`
-}
+// type weatherLog struct {
+// 	// Time    string `json:"time"`
+// 	Weather string `json:"weather"`
+// 	Temp    int    `json:"temp"`
+// }
 
 func main() {
-	println("server - http://localhost:8888")
+	println("server - http://localhost:8080")
 	http.HandleFunc("/", showHandler)
 	http.HandleFunc("/write", writeHandler)
-	http.ListenAndServe(":8888", nil)
+	http.ListenAndServe(":8080", nil)
 }
 
 func showHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,9 +42,9 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 			i.ID,
 			html.EscapeString(i.Name),
 			html.EscapeString(i.Body),
-			time.Unix(i.CTime, 0).Format("2006/1/1 15:04"))
+			time.Unix(i.CTime, 0).Format("2006/1/2 15:04"))
 	}
-	weatherLogAPI, err := ioutil.ReadFile("openweather.txt")
+	weatherLogAPI, err := ioutil.ReadFile("tmp/openweather.txt")
 	if err != nil {
 		return
 	}
@@ -101,3 +101,4 @@ func saveLogs(logs []Log) {
 }
 
 // http://program.okitama.org/posts/2017-08-23_golang-timer-ticker/
+// 3時４分PM
