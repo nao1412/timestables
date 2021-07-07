@@ -21,7 +21,7 @@ if judge == 'y':
   print('n (separated by spaces) >>', end=' ')
   nnn = list(map(int, input().split()))
 elif judge == 'x':
-  print('n (separated by spaces) >>', end=' ')
+  print('n (separated by spaces) >>', end=' ')  
   mmm = list(map(int, input().split()))
 
 times_tables = []
