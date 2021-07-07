@@ -169,7 +169,10 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 	todayEvent := day.Format(layout3)
 	connpassEndpoint := "https://connpass.com/api/v1/event/?ymd="
 	connpassEndpoint += today
-	resp, _ := http.Get(connpassEndpoint)
+	resp, err := http.Get(connpassEndpoint)
+	if err != nil {
+		return
+	}
 	defer resp.Body.Close()
 	byteArray, _ := ioutil.ReadAll(resp.Body)
 	jsonBytes := ([]byte)(byteArray)
