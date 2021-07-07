@@ -1,14 +1,27 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>times tables</title>
+		<title>Times tables</title>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	</head>
 	<body>
-		<h1>times tables</h1>
-    <label>START : <input type="text" size="10" id="START" value="0"></label>
-    <label>GOAL : <input type="text" size="10" id="GOAL" value="0"></label>
-    <input type="button" value="Run" id="RunButton" onclick="run()">
+		<h1>Times tables</h1>
+		<p>
+			<label>START : <input type="text" size="10" id="START" value="1"></label>
+			<label>GOAL : <input type="text" size="10" id="GOAL" value="9"></label><br>
+			<label>Escape Table : <input type="text" size="10" id="esTable" value="0"> times</label><br>
+			<div>
+        <form id="content">
+          <label for="only_n">
+            Only multiple of N : <input type="text" id="only_n" name="RadioG" value="1">
+          </label><br>
+          <label for="except_n">
+            Except multiple of N : <input type="text" id="except_n" name="RadioG" value="-1">
+          </label>
+        </form>
+			</div>
+			<input type="button" value="Run" id="RunButton" onclick="run()">
+		</p>
     <p id="test"></p>
 		<table class="table table-bordered table-hover table-sm" style="text-align: center;">
 			<thead class="thead-dark">
@@ -24,12 +37,34 @@
       function run() {
 				START = Number(document.getElementById('START').value);
 				GOAL = Number(document.getElementById('GOAL').value);
+        n = Number(document.getElementById('only_n').value);
+        m = Number(document.getElementById('except_n').value);
         for (var i = START; i <= GOAL; i++) {
-          $('table').find('thead').find('tr').append('<th>' + i + ' times' + '</th>');
-          $('table').find('tbody').append('<tr><th>' + 'x' + i + '</th></tr>');
+					$('table').find('tbody').append('<tr><th>' + 'x' + i + '</th></tr>');
+					if (i != Number(document.getElementById('esTable').value)) {
+          	$('table').find('thead').find('tr').append('<th>' + i + ' times' + '</th>');
+					}
           for (var j = START; j <= GOAL; j++) {
             var ans = i * j;
-            $('table').find('tbody').find('tr').eq(i-START).append('<td>'+ i + 'x' + j + '=' + ans + '</td>');
+						if (j != Number(document.getElementById('esTable').value)) {
+              if (n * m == -1) {
+              	$('table').find('tbody').find('tr').eq(i-START).append('<td>'+ j + 'x' + i + '=' + ans + '</td>');
+              } else {
+                if (m == -1) {
+                  if (ans % n == 0) {
+                  $('table').find('tbody').find('tr').eq(i-START).append('<td>'+ j + 'x' + i + '=' + ans + '</td>');
+                  } else {
+                    $('table').find('tbody').find('tr').eq(i-START).append('<td>' + '</td>');
+                  }
+                } else {
+                  if (ans % n == 0 && ans % m != 0) {
+                  $('table').find('tbody').find('tr').eq(i-START).append('<td>'+ j + 'x' + i + '=' + ans + '</td>');
+                  } else {
+                    $('table').find('tbody').find('tr').eq(i-START).append('<td>' + '</td>');
+                  }
+                }
+              }
+						}
           }
         }
       }
