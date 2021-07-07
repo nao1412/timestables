@@ -6,8 +6,8 @@
 	</head>
 	<body>
 		<h1>times tables</h1>
-    <label>START : <input type="text" size="10" id="START"></label>
-    <label>GOAL : <input type="text" size="10" id="GOAL"></label>
+    <label>START : <input type="text" size="10" id="START" value="0"></label>
+    <label>GOAL : <input type="text" size="10" id="GOAL" value="0"></label>
     <input type="button" value="Run" id="RunButton" onclick="run()">
     <p id="test"></p>
 		<table class="table table-bordered table-hover table-sm" style="text-align: center;">
@@ -21,12 +21,9 @@
 		</table>
 		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 		<script>
-      var START = 3, GOAL = 9;
-      // let a = document.getElementById('START').value;
-      // var b = document.getElementById("GOAL").textContent;
-      // let test = document.getElementById('test').value;
       function run() {
-        // test.value = a;
+				START = Number(document.getElementById('START').value);
+				GOAL = Number(document.getElementById('GOAL').value);
         for (var i = START; i <= GOAL; i++) {
           $('table').find('thead').find('tr').append('<th>' + i + ' times' + '</th>');
           $('table').find('tbody').append('<tr><th>' + 'x' + i + '</th></tr>');
