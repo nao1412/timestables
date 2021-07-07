@@ -11,7 +11,6 @@ import (
 )
 
 const logFile = "tmp/logs.json" // 時間があったらsqliteに保存する
-// const weatherFile = "openweather.json"
 const weatherFile = "openweather.txt"
 
 type OpenWeatherMapAPIResponse struct {
@@ -57,11 +56,11 @@ type OpenWeatherMapAPIResponse struct {
 	Cod      int    `json:"cod"`
 }
 
-type weatherLog struct {
+type WeatherLog struct {
 	// Time    string `json:"time"`
-	Weather string  `json:"weather"`
-	Temp    int     `json:"temp"`
-	Speed   float64 `json:"speed"`
+	Weather string `json:"weather"`
+	Temp    string `json:"temp"`
+	Speed   string `json:"wind speed"`
 }
 
 type Log struct {
@@ -70,12 +69,6 @@ type Log struct {
 	Body  string `json:"body"`
 	CTime int64  `json:"ctime"`
 }
-
-// type weatherLog struct {
-// 	// Time    string `json:"time"`
-// 	Weather string `json:"weather"`
-// 	Temp    int    `json:"temp"`
-// }
 
 func main() {
 	buildServer()
@@ -94,7 +87,57 @@ func buildServer() {
 	http.ListenAndServe(":8080", nil)
 }
 
-func showWeatherData() {
+// func showWeatherData() {
+// 	token := "4b729f5b5fb545d31c278041f43b99e2"
+// 	city := "Tokyo,jp"
+// 	endPoint := "https://api.openweathermap.org/data/2.5/weather"
+
+// 	values := url.Values{}
+// 	values.Set("q", city)
+// 	values.Set("APPID", token)
+
+// 	res, err := http.Get(endPoint + "?" + values.Encode())
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	defer res.Body.Close()
+// 	bytes, err := ioutil.ReadAll(res.Body)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	// fmt.Println(string(bytes))
+// 	// ここのbytesをopenweather.jsonに格納したい
+// 	// json parse
+// 	var apiRes OpenWeatherMapAPIResponse
+// 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
+// 		panic(err)
+// 	}
+// 	fmt.Println(apiRes)
+// 	weatherlog := weatherLog{
+// 		// timeはその時間を出力
+// 		Weather: apiRes.Weather[0].Main,
+// 		Temp:    int(apiRes.Main.Temp - 273),
+// 		Speed:   apiRes.Wind.Speed,
+// 	}
+
+// 	bytes, _ = json.Marshal(&weatherlog)
+// 	ioutil.WriteFile(weatherFile, bytes, 0644)
+// 	fmt.Println(string(bytes))
+// }
+
+func showHandler(w http.ResponseWriter, r *http.Request) {
+	htmlLog := ""
+
+	logs := loadLogs()
+	for _, i := range logs {
+		htmlLog += fmt.Sprintf(
+			"<p>(%d) <span>%s</span>: %s --- %s</p>",
+			i.ID,
+			html.EscapeString(i.Name),
+			html.EscapeString(i.Body),
+			time.Unix(i.CTime, 0).Format("2006/1/2 15:04"))
+	}
+
 	token := "4b729f5b5fb545d31c278041f43b99e2"
 	city := "Tokyo,jp"
 	endPoint := "https://api.openweathermap.org/data/2.5/weather"
@@ -119,43 +162,35 @@ func showWeatherData() {
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
 		panic(err)
 	}
+	fmt.Println(apiRes)
+	// weatherlog := WeatherLog{
+	// 	// timeはその時間を出力
+	// 	Weather: apiRes.Weather[0].Main,
+	// 	Temp:    string(int(apiRes.Main.Temp - 273)),
+	// 	Speed:   string(int(apiRes.Wind.Speed)),
+	// }
 
-	weatherlog := weatherLog{
-		// timeはその時間を出力
-		Weather: apiRes.Weather[0].Description,
-		Temp:    int(apiRes.Main.Temp - 273),
-		Speed:   apiRes.Wind.Speed,
-	}
+	// bytes, _ = json.Marshal(&weatherlog)
+	// ioutil.WriteFile(weatherFile, bytes, 0644)
+	// fmt.Println(string(bytes))
+	// weatherLogAPI, err := ioutil.ReadFile(weatherFile)
+	// if err != nil {
+	// 	return
+	// }
 
-	bytes, _ = json.Marshal(&weatherlog)
-	ioutil.WriteFile(weatherFile, bytes, 0644)
-	fmt.Println(string(bytes))
-}
-func showHandler(w http.ResponseWriter, r *http.Request) {
-	htmlLog := ""
-
-	logs := loadLogs()
-	for _, i := range logs {
-		htmlLog += fmt.Sprintf(
-			"<p>(%d) <span>%s</span>: %s --- %s</p>",
-			i.ID,
-			html.EscapeString(i.Name),
-			html.EscapeString(i.Body),
-			time.Unix(i.CTime, 0).Format("2006/1/2 15:04"))
-	}
-	weatherLogAPI, err := ioutil.ReadFile("openweather.txt")
-	if err != nil {
-		return
-	}
-	showWeatherData()
-	htmlLogAPI := string(weatherLogAPI)
+	// htmlLogAPI := string(weatherLogAPI)
 	htmlBody := "<html><head><style>" +
 		"p { border: 1px solid silver; padding: 1em;} " +
 		"span { background-color: #eef; } " +
 		"</style></head><body><h1>No71c3 8o4rD</h1><h2>Let's play with 1337 5p34k</h2>" +
 		getForm() +
 		// API
-		htmlLogAPI +
+		"<p>Weather Broadcast at Tokyo<br>Weather : " + apiRes.Weather[0].Main + " (" + apiRes.Weather[0].Description + ")" + "<br>" +
+		// "Wind speed : " + string(int(apiRes.Wind.Speed)) + "<br>" +
+		"</p>" +
+		"<p>Next Event in Connpass<br>" +
+		// htmlLogAPI +
+		"</p>" +
 		htmlLog +
 		"</body></html>"
 	w.Write([]byte(htmlBody))

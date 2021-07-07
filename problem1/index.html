@@ -21,12 +21,12 @@
 		</table>
 		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 		<script>
-      var START = 3, GOAL = 9;
       // let a = document.getElementById('START').value;
       // var b = document.getElementById("GOAL").textContent;
       // let test = document.getElementById('test').value;
       function run() {
-        // test.value = a;
+				var START = 1, GOAL = 9;
+				START = Number(document.getElementById('START').textContent);
         for (var i = START; i <= GOAL; i++) {
           $('table').find('thead').find('tr').append('<th>' + i + ' times' + '</th>');
           $('table').find('tbody').append('<tr><th>' + 'x' + i + '</th></tr>');
