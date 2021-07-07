@@ -162,7 +162,7 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 	day := time.Now()
 	const layout = "20060102"
 	const layout2 = "2006-01-02 15:04:05"
-	const layout3 = "01-02"
+	const layout3 = "Mon, January 2, 2006"
 	// fmt.Println(day.Format(layout))
 	today := day.Format(layout)
 	nowTime := day.Format(layout2)
