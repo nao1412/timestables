@@ -1,1 +1,1 @@
-{"weather":"light rain","temp":25,"speed":0.89}
+{"weather":"Clouds","temp":30,"wind speed":1.34}
