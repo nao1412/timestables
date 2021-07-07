@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
 )
 
@@ -163,6 +164,7 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	fmt.Println(apiRes)
+	fmt.Println(strconv.Itoa(int(apiRes.Main.Temp - 273)))
 	// weatherlog := WeatherLog{
 	// 	// timeはその時間を出力
 	// 	Weather: apiRes.Weather[0].Main,
@@ -186,7 +188,8 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 		getForm() +
 		// API
 		"<p>Weather Broadcast at Tokyo<br>Weather : " + apiRes.Weather[0].Main + " (" + apiRes.Weather[0].Description + ")" + "<br>" +
-		// "Wind speed : " + string(int(apiRes.Wind.Speed)) + "<br>" +
+		"Temp : " + strconv.Itoa(int(apiRes.Main.Temp-273)) + " ℃<br>" +
+		"Wind Speed : " + strconv.FormatFloat(apiRes.Wind.Speed, 'f', 2, 64) + " m/s<br>" +
 		"</p>" +
 		"<p>Next Event in Connpass<br>" +
 		// htmlLogAPI +
@@ -234,6 +237,3 @@ func saveLogs(logs []Log) {
 	bytes, _ := json.Marshal(logs)
 	ioutil.WriteFile(logFile, bytes, 0644)
 }
-
-// http://program.okitama.org/posts/2017-08-23_golang-timer-ticker/
-// 3:04PM
