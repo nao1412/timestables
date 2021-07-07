@@ -12,7 +12,6 @@ import (
 )
 
 const logFile = "tmp/logs.json" // 時間があったらsqliteに保存する
-const weatherFile = "openweather.txt"
 
 type OpenWeatherMapAPIResponse struct {
 	Coord struct {
@@ -58,10 +57,42 @@ type OpenWeatherMapAPIResponse struct {
 }
 
 type WeatherLog struct {
-	// Time    string `json:"time"`
 	Weather string `json:"weather"`
 	Temp    string `json:"temp"`
 	Speed   string `json:"wind speed"`
+}
+
+type ConnpassEvent struct {
+	ResultsStart     int `json:"results_start"`
+	ResultsReturned  int `json:"results_returned"`
+	ResultsAvailable int `json:"results_available"`
+	Events           []struct {
+		EventID          int         `json:"event_id"`
+		Title            string      `json:"title"`
+		Catch            string      `json:"catch"`
+		Description      string      `json:"description"`
+		EventURL         string      `json:"event_url"`
+		StartedAt        time.Time   `json:"started_at"`
+		EndedAt          time.Time   `json:"ended_at"`
+		Limit            int         `json:"limit"`
+		HashTag          string      `json:"hash_tag"`
+		EventType        string      `json:"event_type"`
+		Accepted         int         `json:"accepted"`
+		Waiting          int         `json:"waiting"`
+		UpdatedAt        time.Time   `json:"updated_at"`
+		OwnerID          int         `json:"owner_id"`
+		OwnerNickname    string      `json:"owner_nickname"`
+		OwnerDisplayName string      `json:"owner_display_name"`
+		Place            string      `json:"place"`
+		Address          string      `json:"address"`
+		Lat              interface{} `json:"lat"`
+		Lon              interface{} `json:"lon"`
+		Series           struct {
+			ID    int    `json:"id"`
+			Title string `json:"title"`
+			URL   string `json:"url"`
+		} `json:"series"`
+	} `json:"events"`
 }
 
 type Log struct {
@@ -81,50 +112,13 @@ func main() {
 		}
 	}
 }
+
 func buildServer() {
 	println("server - http://localhost:8080")
 	http.HandleFunc("/", showHandler)
 	http.HandleFunc("/write", writeHandler)
 	http.ListenAndServe(":8080", nil)
 }
-
-// func showWeatherData() {
-// 	token := "4b729f5b5fb545d31c278041f43b99e2"
-// 	city := "Tokyo,jp"
-// 	endPoint := "https://api.openweathermap.org/data/2.5/weather"
-
-// 	values := url.Values{}
-// 	values.Set("q", city)
-// 	values.Set("APPID", token)
-
-// 	res, err := http.Get(endPoint + "?" + values.Encode())
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	defer res.Body.Close()
-// 	bytes, err := ioutil.ReadAll(res.Body)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	// fmt.Println(string(bytes))
-// 	// ここのbytesをopenweather.jsonに格納したい
-// 	// json parse
-// 	var apiRes OpenWeatherMapAPIResponse
-// 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
-// 		panic(err)
-// 	}
-// 	fmt.Println(apiRes)
-// 	weatherlog := weatherLog{
-// 		// timeはその時間を出力
-// 		Weather: apiRes.Weather[0].Main,
-// 		Temp:    int(apiRes.Main.Temp - 273),
-// 		Speed:   apiRes.Wind.Speed,
-// 	}
-
-// 	bytes, _ = json.Marshal(&weatherlog)
-// 	ioutil.WriteFile(weatherFile, bytes, 0644)
-// 	fmt.Println(string(bytes))
-// }
 
 func showHandler(w http.ResponseWriter, r *http.Request) {
 	htmlLog := ""
@@ -139,15 +133,15 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 			time.Unix(i.CTime, 0).Format("2006/1/2 15:04"))
 	}
 
-	token := "4b729f5b5fb545d31c278041f43b99e2"
+	weatherToken := "4b729f5b5fb545d31c278041f43b99e2"
 	city := "Tokyo,jp"
-	endPoint := "https://api.openweathermap.org/data/2.5/weather"
+	weatherEndpoint := "https://api.openweathermap.org/data/2.5/weather"
 
 	values := url.Values{}
 	values.Set("q", city)
-	values.Set("APPID", token)
+	values.Set("APPID", weatherToken)
 
-	res, err := http.Get(endPoint + "?" + values.Encode())
+	res, err := http.Get(weatherEndpoint + "?" + values.Encode())
 	if err != nil {
 		panic(err)
 	}
@@ -163,35 +157,55 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
 		panic(err)
 	}
-	fmt.Println("openeweatherAPI", apiRes)
-	// weatherlog := WeatherLog{
-	// 	// timeはその時間を出力
-	// 	Weather: apiRes.Weather[0].Main,
-	// 	Temp:    string(int(apiRes.Main.Temp - 273)),
-	// 	Speed:   string(int(apiRes.Wind.Speed)),
-	// }
+	// fmt.Println("openeweatherAPI", apiRes)
 
-	// bytes, _ = json.Marshal(&weatherlog)
-	// ioutil.WriteFile(weatherFile, bytes, 0644)
-	// fmt.Println(string(bytes))
-	// weatherLogAPI, err := ioutil.ReadFile(weatherFile)
-	// if err != nil {
-	// 	return
-	// }
+	day := time.Now()
+	const layout = "20060102"
+	const layout2 = "2006-01-02 15:04:05"
+	const layout3 = "01-02"
+	// fmt.Println(day.Format(layout))
+	today := day.Format(layout)
+	nowTime := day.Format(layout2)
+	todayEvent := day.Format(layout3)
+	connpassEndpoint := "https://connpass.com/api/v1/event/?ymd="
+	connpassEndpoint += today
+	resp, _ := http.Get(connpassEndpoint)
+	defer resp.Body.Close()
+	byteArray, _ := ioutil.ReadAll(resp.Body)
+	jsonBytes := ([]byte)(byteArray)
+	data := new(ConnpassEvent)
 
-	// htmlLogAPI := string(weatherLogAPI)
+	if err := json.Unmarshal(jsonBytes, data); err != nil {
+		fmt.Println("JSON Unmarshal error: ", err)
+		return
+	}
+	connpassEventTitle1 := data.Events[0].Title
+	connpassEventURL1 := "<a href=\"" + data.Events[0].EventURL + "\">"
+	connpassEventTitle2 := data.Events[1].Title
+	connpassEventURL2 := "<a href=\"" + data.Events[1].EventURL + "\">"
+	connpassEventTitle3 := data.Events[2].Title
+	connpassEventURL3 := "<a href=\"" + data.Events[2].EventURL + "\">"
+	connpassEventTitle4 := data.Events[3].Title
+	connpassEventURL4 := "<a href=\"" + data.Events[3].EventURL + "\">"
+	connpassEventTitle5 := data.Events[4].Title
+	connpassEventURL5 := "<a href=\"" + data.Events[4].EventURL + "\">"
+
 	htmlBody := "<html><head><style>" +
 		"p { border: 1px solid silver; padding: 1em;} " +
 		"span { background-color: #eef; } " +
 		"</style></head><body><h1>No71c3 8o4rD</h1><h2>Let's play with 1337 5p34k</h2>" +
 		getForm() +
 		// API
-		"<p>Weather Broadcast at Tokyo<br>Weather : " + apiRes.Weather[0].Main + " (" + apiRes.Weather[0].Description + ")" + "<br>" +
-		"Temp : " + strconv.Itoa(int(apiRes.Main.Temp-273)) + " ℃<br>" +
+		"<p>Weather Broadcast at Tokyo (" + nowTime + ")<br>Weather : " + apiRes.Weather[0].Main + " (" + apiRes.Weather[0].Description + ")" + "<br>" +
+		"Temperature : " + strconv.Itoa(int(apiRes.Main.Temp-273)) + " ℃<br>" +
 		"Wind Speed : " + strconv.FormatFloat(apiRes.Wind.Speed, 'f', 2, 64) + " m/s<br>" +
 		"</p>" +
-		"<p>Next Event in Connpass<br>" +
-		// htmlLogAPI +
+		"<p>Today's Event in Connpass (" + todayEvent + ")<br>" +
+		"1 : " + connpassEventURL1 + connpassEventTitle1 + "</a>" + "<br>" +
+		"2 : " + connpassEventURL2 + connpassEventTitle2 + "</a>" + "<br>" +
+		"3 : " + connpassEventURL3 + connpassEventTitle3 + "</a>" + "<br>" +
+		"4 : " + connpassEventURL4 + connpassEventTitle4 + "</a>" + "<br>" +
+		"5 : " + connpassEventURL5 + connpassEventTitle5 + "</a>" + "<br>" +
 		"</p>" +
 		htmlLog +
 		"</body></html>"
