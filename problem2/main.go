@@ -163,8 +163,7 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
 		panic(err)
 	}
-	fmt.Println(apiRes)
-	fmt.Println(strconv.Itoa(int(apiRes.Main.Temp - 273)))
+	fmt.Println("openeweatherAPI", apiRes)
 	// weatherlog := WeatherLog{
 	// 	// timeはその時間を出力
 	// 	Weather: apiRes.Weather[0].Main,
