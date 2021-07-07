@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>Times tables</title>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	</head>
-	<body>
-		<h1>Times tables</h1>
-		<p>
-			<label>START : <input type="text" size="10" id="START" value="1"></label>
-			<label>GOAL : <input type="text" size="10" id="GOAL" value="9"></label><br>
-			<label>Escape Table : <input type="text" size="10" id="esTable" value="0"> times</label><br>
-			<div>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Times tables</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+    <h1>Times tables</h1>
+    <p>
+      <label>START : <input type="text" size="10" id="START" value="1"></label>
+      <label>GOAL : <input type="text" size="10" id="GOAL" value="9"></label><br>
+      <label>Escape Table : <input type="text" size="10" id="esTable" value="0"> times</label><br>
+      <div>
         <form id="content">
           <label for="only_n">
             Only multiple of N : <input type="text" id="only_n" name="RadioG" value="1">
@@ -20,34 +20,34 @@
             Except multiple of N : <input type="text" id="except_n" name="RadioG" value="-1">
           </label>
         </form>
-			</div>
-			<input type="button" value="Run" id="RunButton" onclick="run()">
-		</p>
+      </div>
+      <input type="button" value="Run" id="RunButton" onclick="run()">
+    </p>
     <p id="test"></p>
-		<table class="table table-bordered table-hover table-sm" style="text-align: center;">
-			<thead class="thead-dark">
-				<tr>
-					<th>#</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-		<script>
+    <table class="table table-bordered table-hover table-sm" style="text-align: center;">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script>
       function run() {
-				START = Number(document.getElementById('START').value);
-				GOAL = Number(document.getElementById('GOAL').value);
+        START = Number(document.getElementById('START').value);
+        GOAL = Number(document.getElementById('GOAL').value);
         n = Number(document.getElementById('only_n').value);
         m = Number(document.getElementById('except_n').value);
         for (var i = START; i <= GOAL; i++) {
-					$('table').find('tbody').append('<tr><th>' + 'x' + i + '</th></tr>');
-					if (i != Number(document.getElementById('esTable').value)) {
+          $('table').find('tbody').append('<tr><th>' + 'x' + i + '</th></tr>');
+          if (i != Number(document.getElementById('esTable').value)) {
           	$('table').find('thead').find('tr').append('<th>' + i + ' times' + '</th>');
-					}
+          }
           for (var j = START; j <= GOAL; j++) {
             var ans = i * j;
-						if (j != Number(document.getElementById('esTable').value)) {
+            if (j != Number(document.getElementById('esTable').value)) {
               if (n * m == -1) {
               	$('table').find('tbody').find('tr').eq(i-START).append('<td>'+ j + 'x' + i + '=' + ans + '</td>');
               } else {
@@ -65,10 +65,10 @@
                   }
                 }
               }
-						}
+            }
           }
         }
       }
-		</script>
-	</body>
+    </script>
+  </body>
 </html>
