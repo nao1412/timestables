@@ -32,8 +32,13 @@
 
 `main.py`では`START`と`GOAL`以外の値で複数入力が可能です。しかし、ブラウザでは出力することはできないのでご了承ください。
 
-* problem2 (Notice board 1337)
- 
+* problem2 (No71c3 8o4rD 1337)
+
+Notice board(掲示板)です。`N4M3`(NAME)に名前、`CH47`(CHAT)にコメントを入力すると投稿日時とともにComments以下に表示される。
+
+pタグの2番目には、https://openweathermap.org/api から取得した現在の東京の天気のデータを表示し、最高1時間でデータが更新される。
+
+pタグの3番目には、https://connpass.com/about/api/ から取得したその日のconnpassで行われるイベントを時間の早い順に5つ表示している。
 
 # Requirement
 
