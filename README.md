@@ -24,28 +24,28 @@
 
 それぞれの値は複数入力することはできません。1つずづ入力してください。
 
+`main.py`では`START`と`GOAL`以外の値で複数入力が可能です。しかし、ブラウザでは出力することはできないのでご了承ください。
+
 * problem2 (Notice board 1337)
  
 
 # Requirement
- 
-** Go 1.16.5
- 
-# Installation
- 
- 
-```bash
-```
+
+* Python 3.9.6
+* Go 1.16.5
  
 # Usage
- 
-```
- 
-# Note
- 
-注意点などがあれば書く
 
-# References
+* problem1
+
+`index.html`をブラウザで開く
+
+* problem2
+
+```
+❯ go run main.go
+server - http://localhost:8080 // サーバーURLをクリック
+```
  
 # Author
  
