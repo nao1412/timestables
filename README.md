@@ -1,4 +1,4 @@
-# timestables-and-notice-board
+# Times tables & Notice board
 
 値の範囲を変えられる九九表(problem1)と掲示板(problem2)のコードです
  
