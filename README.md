@@ -4,7 +4,7 @@
  
 # DEMO
  
-![image](https://user-images.githubusercontent.com/64777602/124921100-05c9d780-e033-11eb-923e-a160ba1242dd.png)
+![image](https://user-images.githubusercontent.com/64777602/124928417-893af700-e03a-11eb-9542-51b3353e0391.png)
 
  problem1では`index.html`をブラウザで開くことで上のような九九表を得られます。
 
