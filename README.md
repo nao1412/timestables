@@ -4,6 +4,12 @@
  
 # DEMO
  
+* problem1
+
+![image](https://user-images.githubusercontent.com/64777602/124928603-b1c2f100-e03a-11eb-8a8e-bb41a5070980.png)
+
+* problem2
+
 ![image](https://user-images.githubusercontent.com/64777602/124928417-893af700-e03a-11eb-9542-51b3353e0391.png)
 
  problem1では`index.html`をブラウザで開くことで上のような九九表を得られます。
