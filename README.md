@@ -10,7 +10,7 @@
 
 * problem2
 
-![image](https://user-images.githubusercontent.com/64777602/124928417-893af700-e03a-11eb-9542-51b3353e0391.png)
+![image](https://user-images.githubusercontent.com/64777602/124928780-e2a32600-e03a-11eb-8ff9-4e55b3dde07c.png)
 
  problem1では`index.html`をブラウザで開くことで上のような九九表を得られます。
 
