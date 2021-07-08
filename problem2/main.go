@@ -126,7 +126,7 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 	logs := loadLogs()
 	for _, i := range logs {
 		htmlLog += fmt.Sprintf(
-			"<p>(%d) <span>%s</span>: %s --- %s</p>",
+			"<p>(%d) <span>%s</span> : %s --- %s</p>",
 			i.ID,
 			html.EscapeString(i.Name),
 			html.EscapeString(i.Body),
@@ -193,10 +193,12 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 	connpassEventTitle5 := data.Events[4].Title
 	connpassEventURL5 := "<a href=\"" + data.Events[4].EventURL + "\">"
 
+	leeturl := "https://en.wikipedia.org/wiki/Leet"
 	htmlBody := "<html><head><style>" +
 		"p { border: 1px solid silver; padding: 1em;} " +
 		"span { background-color: #eef; } " +
-		"</style></head><body><h1>No71c3 8o4rD</h1><h2>Let's play with 1337 5p34k</h2>" +
+		"</style></head><body><h1>No71c3 8o4rD 1337</h1><h2>Let's play with 1337 5p34k</h2>" +
+		"<p>how to write leet speaks -> <a href=" + leeturl + ">click here</a></p>" +
 		getForm() +
 		// API
 		"<p>Weather Broadcast at Tokyo (" + nowTime + ")<br>Weather : " + apiRes.Weather[0].Main + " (" + apiRes.Weather[0].Description + ")" + "<br>" +
@@ -234,8 +236,8 @@ func writeHandler(w http.ResponseWriter, r *http.Request) {
 
 func getForm() string {
 	return "<div><form action='/write' method='POST'>" +
-		"N4M3: <input type='text' name='name'><br>" +
-		"CH47: <input type='text' name='body' style='width:30em;'><br>" +
+		"N4M3 : <input type='text' name='name'><br>" +
+		"CH47 : <input type='text' name='body' style='width:30em;'><br>" +
 		"<input type='submit' value='POST'>" +
 		"</form></div><hr>"
 }
