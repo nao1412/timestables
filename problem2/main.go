@@ -210,6 +210,7 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 		"4 : " + connpassEventURL4 + connpassEventTitle4 + "</a>" + "<br>" +
 		"5 : " + connpassEventURL5 + connpassEventTitle5 + "</a>" + "<br>" +
 		"</p>" +
+		"<h2>Comments</h2>" +
 		htmlLog +
 		"</body></html>"
 	w.Write([]byte(htmlBody))

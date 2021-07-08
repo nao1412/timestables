@@ -5,26 +5,26 @@
     <title>Times tables</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
-  <body>
+  <body onload="DefaultSave()">
     <h1>Times tables</h1>
     <p>
       <label>START : <input type="text" size="10" id="START" value="1"></label>
       <label>GOAL : <input type="text" size="10" id="GOAL" value="9"></label><br>
-      <label>Escape Table : <input type="text" size="10" id="esTable" value="0"> times</label><br>
+      <label>Delete Table : <input type="text" size="10" id="esTable" value="0"> times</label><br>
       <div>
         <form id="content">
           <label for="only_n">
-            Only multiple of N : <input type="text" id="only_n" name="RadioG" value="1">
+            Only multiples of N : <input type="text" id="only_n" name="RadioG" value="1">
           </label><br>
           <label for="except_n">
-            Except multiple of N : <input type="text" id="except_n" name="RadioG" value="-1">
+            Except multiples of N : <input type="text" id="except_n" name="RadioG" value="-1">
           </label>
         </form>
       </div>
       <input type="button" value="Run" id="RunButton" onclick="run()">
+      <input type="button" value="Reset" onclick="HTMLRestore()">
     </p>
-    <p id="test"></p>
-    <table class="table table-bordered table-hover table-sm" style="text-align: center;">
+    <table class="table table-bordered table-hover table-sm" style="text-align: center;" id="timestables">
       <thead class="thead-dark">
         <tr>
           <th>#</th>
@@ -35,6 +35,16 @@
     </table>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script>
+      // 初期HTML記述をセット
+      var defaultHTML;
+      function DefaultSave() {
+        defaultHTML = document.body.innerHTML;
+      }
+      // // HTML記述を初期状態に戻す
+      function HTMLRestore() {
+        console.log(defaultHTML);
+        document.body.innerHTML = defaultHTML;
+      }
       function run() {
         START = Number(document.getElementById('START').value);
         GOAL = Number(document.getElementById('GOAL').value);
