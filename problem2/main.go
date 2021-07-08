@@ -193,7 +193,7 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 	connpassEventTitle5 := data.Events[4].Title
 	connpassEventURL5 := "<a href=\"" + data.Events[4].EventURL + "\">"
 
-	leeturl := "https://en.wikipedia.org/wiki/Leet"
+	leeturl := "https://simple.wikipedia.org/wiki/Leet"
 	htmlBody := "<html><head><style>" +
 		"p { border: 1px solid silver; padding: 1em;} " +
 		"span { background-color: #eef; } " +
