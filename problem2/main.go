@@ -104,7 +104,7 @@ type Log struct {
 
 func main() {
 	buildServer()
-	t := time.NewTicker(360 * time.Second)
+	t := time.NewTicker(3600 * time.Second)
 	for {
 		select {
 		case <-t.C:
@@ -133,7 +133,7 @@ func showHandler(w http.ResponseWriter, r *http.Request) {
 			time.Unix(i.CTime, 0).Format("2006/1/2 15:04"))
 	}
 
-	weatherToken := "4b729f5b5fb545d31c278041f43b99e2"
+	weatherToken := "XXXX" // get an API key from openweater
 	city := "Tokyo,jp"
 	weatherEndpoint := "https://api.openweathermap.org/data/2.5/weather"
 
